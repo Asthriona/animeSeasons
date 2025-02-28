@@ -293,6 +293,79 @@ h1 {
     margin-right: 5px;
 }
 
-.spacer {
+.footer {
+    background: #000;
+    border-top: 1px solid #333;
+    padding: 40px 20px;
+    margin: 50px 0;
+}
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
     margin-bottom: 20px;
+}
+.footer-section h3 {
+    color: #fff;
+}
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-section a {
+    color: #ccc;
+    text-decoration: none;
+}
+.footer-section a:hover {
+    color: #fff;
+}
+.social-links a {
+    display: inline-block;
+    margin-right: 10px;
+}
+.support-img {
+    width: 100px;
+}
+.github-sponsor {
+    border: 0;
+    border-radius: 6px;
+    width: 114px;
+    height: 32px;
+}
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+.badge-container {
+    position: relative;
+}
+.badge {
+    background: rgba(128, 0, 128, 0.2);
+    border: 1px solid rgba(128, 0, 128, 0.5);
+    color: #a64ca6;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+.tooltip {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+    display: none;
+}
+.badge-container:hover .tooltip {
+    display: block;
 }

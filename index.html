@@ -5,30 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asthriona's Anime by Season</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="https://asthriona.com/favicon.ico">
+    <meta property="og:title" content="Asthriona's Anime Season">
+    <meta property="og:description" content="All the anime I watch in one place, per seasons.">
+    <meta property="og:image" content="https://asthriona.com/og-image.png">
+    <meta property="og:url" content="https://asthriona.com/anime-by-season">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Asthriona's Anime by Season">
+    <meta name="twitter:description" content="All the anime I watch in one place, per seasons.">
+    <meta name="twitter:image" content="https://asthriona.com/og-image.png">
+    <meta name="twitter:site" content="@Asthriona">
+    <meta name="twitter:creator" content="@Asthriona">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="All the anime I watch in one place, per seasons and I bet this will be top result on google before my website.">
+    <meta name="keywords" content="anime, seasons, asthriona">
 </head>
 <body>
     <div class="container">
-        <div class="profile-header">
-            <div class="banner-img"></div>
-            <div class="profile-content">
-                <div class="avatar">MK</div>
-                <div class="user-info">
-                    <div class="user-details">
-                        <h1>Makoto Kobayashi</h1>
-                        <div class="username">@Asthriona</div>
-                        <div class="location">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            Tokyo, Japan
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- spacer -->
-        <div class="spacer"></div>
+        <h1>Asthriona's Anime by Season</h1>
         
         <div class="status-filter">
             <button class="status-btn" data-status="COMPLETED">Completed</button>
@@ -43,6 +37,47 @@
         <div id="loading" class="loading">Loading...</div>
         <div id="seasons-container" class="seasons-container"></div>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand Section -->
+                <div class="footer-section">
+                    <img src="https://cdn.asthriona.com/static/Asthriona-SL.svg" height="50%" alt="Asthriona Ltd. logo" class="logo">
+                    <p>Exploring technology, sharing knowledge, and building the future.</p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul id="nav-links"></ul>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links" id="social-links"></div>
+                </div>
+                
+                <!-- Support Section -->
+                <div class="footer-section">
+                    <h3>Support My Work</h3>
+                    <a href="https://buymeacoffee.com/Asthriona" target="_blank">
+                        <img src="https://cdn.asthriona.com/i/2024/10/%25pn_241022-191853.png" alt="Buy Me a Coffee" class="support-img">
+                    </a>
+                    <iframe src="https://github.com/sponsors/Asthriona/button" title="Sponsor Asthriona" class="github-sponsor"></iframe>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2019 - <span id="year"></span> Asthriona ltd. All Rights Reserved.</p>
+                <div class="badge-container">
+                    <div class="badge">PROTOTYPE VERSION</div>
+                    <div class="tooltip">Things may change at any time as I see fit.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
 <script src="./main.js"></script>
 </body>
 </html>
