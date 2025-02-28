@@ -1,0 +1,298 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #3DB4F2;
+}
+
+.status-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.status-filter button {
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: #222222;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.status-filter button:hover {
+    background-color: #333333;
+}
+
+.status-filter button.active {
+    background-color: #3DB4F2;
+    color: #000000;
+}
+
+.seasons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.season {
+    background-color: #111111;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.season-header {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #3DB4F2;
+    border-bottom: 2px solid #222222;
+    padding-bottom: 10px;
+}
+
+.current-season-tag {
+    color: #4CAF50;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.anime-card {
+    position: relative;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Status-based color coding for card shadows */
+.anime-card.status-COMPLETED {
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+    /* Green for completed */
+}
+
+.anime-card.status-CURRENT {
+    box-shadow: 0 0 15px rgba(61, 180, 242, 0.5);
+    /* Blue for watching */
+}
+
+.anime-card.status-DROPPED {
+    box-shadow: 0 0 15px rgba(244, 67, 54, 0.5);
+    /* Red for dropped */
+}
+
+.anime-card.status-PAUSED {
+    box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+    /* Orange for paused */
+}
+
+.anime-card.status-PLANNING {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    /* Black for planning */
+}
+
+.anime-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Style for anime that are no longer airing */
+.anime-card.finished .anime-cover {
+    filter: grayscale(0.7);
+}
+
+.anime-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.anime-title {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.anime-info {
+    color: #cccccc;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.anime-runtime {
+    display: block;
+}
+
+.anime-status {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 5px;
+}
+
+.anime-status.status-COMPLETED {
+    background-color: rgba(76, 175, 80, 0.7);
+    color: white;
+}
+
+.anime-status.status-CURRENT {
+    background-color: rgba(61, 180, 242, 0.7);
+    color: white;
+}
+
+.anime-status.status-DROPPED {
+    background-color: rgba(244, 67, 54, 0.7);
+    color: white;
+}
+
+.anime-status.status-PAUSED {
+    background-color: rgba(255, 152, 0, 0.7);
+    color: white;
+}
+
+.anime-status.status-PLANNING {
+    background-color: rgba(85, 85, 85, 0.7);
+    color: white;
+}
+
+.loading {
+    text-align: center;
+    font-size: 20px;
+    padding: 50px;
+    color: #ffffff;
+}
+
+.no-results {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #888888;
+}
+
+.error-message {
+    color: #ff6b6b;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.finished-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #cccccc;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+.profile-header {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.banner-img {
+    width: 100%;
+    height: 150px;
+    background-color: #111111;
+    background-image: linear-gradient(45deg, #111111 25%, #1a1a1a 25%, #1a1a1a 50%, #111111 50%, #111111 75%, #1a1a1a 75%, #1a1a1a 100%);
+    background-size: 56.57px 56.57px;
+}
+
+.profile-content {
+    position: relative;
+    background-color: #000000;
+    padding: 70px 20px 20px;
+    border-radius: 15px 15px 0 0;
+    margin-top: -15px;
+    border-top: 1px solid #333333;
+}
+
+.avatar {
+    position: absolute;
+    top: -50px;
+    left: 20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    background-color: #6a58d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    overflow: hidden;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.user-details h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.username {
+    color: #6a58d3;
+    font-size: 16px;
+}
+
+.location {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    color: #aaaaaa;
+    font-size: 14px;
+}
+
+.location svg {
+    margin-right: 5px;
+}
+
+.spacer {
+    margin-bottom: 20px;
+}
