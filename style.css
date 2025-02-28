@@ -122,7 +122,7 @@ h1 {
 
 /* Style for anime that are no longer airing */
 .anime-card.finished .anime-cover {
-    filter: grayscale(0.7);
+    filter: grayscale(0.6) opacity(0.2);
 }
 
 .anime-overlay {
