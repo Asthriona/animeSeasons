@@ -200,14 +200,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Format runtime as "X hours Y minutes"
                 let runtimeFormatted = '';
                 if (hours > 0) {
-                    runtimeFormatted += `Runtime: ${hours} hour${hours !== 1 ? 's' : ''}`;
+                    runtimeFormatted += `${hours} hour${hours !== 1 ? 's' : ''}`;
                 }
                 if (minutes > 0) {
                     if (hours > 0) runtimeFormatted += ' ';
-                    runtimeFormatted += `Runtime: ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+                    runtimeFormatted += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
                 }
                 if (runtimeFormatted === '') {
-                    runtimeFormatted = 'Runtime: TBA';
+                    runtimeFormatted = 'Runtime TBA';
                 }
 
                 // Get status display name
@@ -219,10 +219,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     'PLANNING': 'Planning'
                 }[userStatus];
 
-                // Create anime card
+                // Create anime card                
                 const animeCard = document.createElement('div');
                 animeCard.className = `anime-card status-${userStatus}`;
                 if (isFinished) animeCard.classList.add('finished');
+
+                // Link to anilist page
+                const animeLink = document.createElement('a');
+                animeLink.href = `https://anilist.co/anime/${anime.id}`;
+                animeLink.target = '_blank';
+                animeLink.appendChild(animeCard);
 
                 const coverImage = document.createElement('img');
                 coverImage.className = 'anime-cover';
@@ -262,7 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 animeCard.appendChild(coverImage);
                 animeCard.appendChild(overlay);
-                animeGrid.appendChild(animeCard);
+                animeLink.appendChild(animeCard);
+animeGrid.appendChild(animeLink);
             });
 
             seasonDiv.appendChild(seasonHeader);
