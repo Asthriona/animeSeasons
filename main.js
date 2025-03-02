@@ -200,14 +200,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Format runtime as "X hours Y minutes"
                 let runtimeFormatted = '';
                 if (hours > 0) {
-                    runtimeFormatted += `${hours} hour${hours !== 1 ? 's' : ''}`;
+                    runtimeFormatted += `Runtime: ${hours} hour${hours !== 1 ? 's' : ''}`;
                 }
                 if (minutes > 0) {
                     if (hours > 0) runtimeFormatted += ' ';
-                    runtimeFormatted += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+                    runtimeFormatted += `Runtime: ${minutes} minute${minutes !== 1 ? 's' : ''}`;
                 }
                 if (runtimeFormatted === '') {
-                    runtimeFormatted = 'TBA';
+                    runtimeFormatted = 'Runtime: TBA';
                 }
 
                 // Get status display name
