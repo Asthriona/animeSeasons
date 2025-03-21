@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const overlay = document.createElement('div');
                 overlay.className = 'anime-overlay';
+                overlay.title = `${anime.title.romaji || anime.title.native} - ${statusDisplay}`;
 
                 const title = document.createElement('div');
                 title.className = 'anime-title';
