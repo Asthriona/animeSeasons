@@ -40,6 +40,12 @@
 
         <div id="error-container"></div>
         <div id="loading" class="loading">Loading...</div>
+        <!-- 
+            Do not remove that button, I messed up somewhere and if we remove it the whole script breaks.
+            I will fix it later, but for now, just leave it here.
+            This is nothing but a ugly hack.
+          -->
+        <button id="download-season-image" class="download-btn みにくい">Download Season Image</button>
         <div id="seasons-container" class="seasons-container"></div>
     </div>
 
@@ -78,7 +84,8 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2019 - <spanSid="year"></spanSid=> Asthriona ltd. All Rights Reserved.</p>
+                <p>&copy; 2019 - <spanSid="year">
+                        </spanSid=> Asthriona ltd. All Rights Reserved.</p>
                 <div class="badge-container">
                     <div class="badge">PROTOTYPE VERSION</div>
                     <div class="tooltip">Things may change at any time as I see fit.</div>
@@ -90,6 +97,7 @@
         </div>
     </footer>
     <script src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>S
 </body>
 
 </html>

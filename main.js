@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const seasonsContainer = document.getElementById('seasons-container');
     const errorContainer = document.getElementById('error-container');
     const statusButtons = document.querySelectorAll('.status-btn');
+    document.getElementById("download-season-image").addEventListener("click", downloadCurrentSeasonImage);
 
     // Hard-coded username
     const username = "asthriona";
@@ -19,6 +20,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (userData) {
                 displayAnimeBySeasons(userData, currentStatus);
+            }
+            
+            /**
+             * Utility function to capture a season image using html2canvas.
+             * @param {HTMLElement} targetElement - The DOM element to capture.
+             * @param {string} fileName - The name of the downloaded file.
+             */
+            function captureSeasonImage(targetElement, fileName) {
+                html2canvas(targetElement, {
+                    backgroundColor: null, // transparent
+                    useCORS: true, // allows cross-origin images
+                    scale: 2 // higher resolution
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = fileName;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                });
             }
         });
     });
@@ -175,6 +194,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 seasonHeader.innerHTML += '<span class="current-season-tag">(current)</span>';
             }
 
+            // Add a download button for the season
+            const downloadButton = document.createElement('button');
+            downloadButton.className = 'download-season-btn';
+            downloadButton.textContent = 'Download Season Image';
+            downloadButton.addEventListener('click', () => {
+                captureSeasonImage(seasonDiv, `${seasonData.season}-${seasonData.year}.png`);
+            });
+
+            seasonHeader.appendChild(downloadButton);
+
             const animeGrid = document.createElement('div');
             animeGrid.className = 'anime-grid';
 
@@ -324,8 +353,28 @@ navigation.forEach(item => {
 const socialLinksContainer = document.getElementById('social-links');
 socialLinks.forEach(link => {
     const a = document.createElement('a');
-    a.href = link.href;
+    if (!seasonsContainer) return alert("No season container.");
     a.textContent = link.name;
     a.target = '_blank';
     socialLinksContainer.appendChild(a);
 });
+
+function downloadCurrentSeasonImage() {
+    console.log("Downloading current season image...");
+    const seasonsContainer = document.getElementById("seasons-container");
+    if (!seasonsContainer) return alert("No season container.");
+
+    // Find the currently visible season
+    const visibleSeasons = [...seasonsContainer.children].filter(season =>
+        window.getComputedStyle(season).display !== 'none'
+    );
+
+    if (visibleSeasons.length === 0) {
+        alert("No visible season to export.");
+        return;
+    }
+
+    const target = visibleSeasons[0]; // assuming only one visible at a time
+
+    captureSeasonImage(target, "anime-season.png");
+}
