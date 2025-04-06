@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     variables: { username }
                 })
             });
-            
+
             const filteredLists = (await response.json()).data.MediaListCollection.lists.filter(list => list.name !== 'Best of all time');
             const data = { data: { MediaListCollection: { lists: filteredLists } } };
             console.log(data)
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 animeCard.appendChild(coverImage);
                 animeCard.appendChild(overlay);
                 animeLink.appendChild(animeCard);
-animeGrid.appendChild(animeLink);
+                animeGrid.appendChild(animeLink);
             });
 
             seasonDiv.appendChild(seasonHeader);
@@ -295,37 +295,37 @@ animeGrid.appendChild(animeLink);
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-        const navigation = [
-            { name: 'Home', href: '/' },
-            { name: 'Blog', href: '/blog' },
-            { name: 'Projects', href: '/projects' },
-            { name: 'About', href: '/about' },
-            { name: 'Anime', href: '/anime' },
-        ];
+const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Projects', href: '/projects' },
+    { name: 'About', href: '/about' },
+    { name: 'Anime', href: '/anime' },
+];
 
-        const socialLinks = [
-            { name: 'GitHub', href: 'https://github.com/Asthriona' },
-            { name: 'BlueSky', href: 'https://bsky.app/profile/asthriona.bsky.social' },
-            { name: 'Twitter', href: 'https://twitter.com/Asthriona' },
-            { name: 'YouTube', href: 'https://youtube.com/@Asthriona' },
-            { name: 'Instagram', href: 'https://www.instagram.com/asthriona.dev/' },
-        ];
+const socialLinks = [
+    { name: 'GitHub', href: 'https://github.com/Asthriona' },
+    { name: 'BlueSky', href: 'https://bsky.app/profile/asthriona.bsky.social' },
+    { name: 'Twitter', href: 'https://twitter.com/Asthriona' },
+    { name: 'YouTube', href: 'https://youtube.com/@Asthriona' },
+    { name: 'Instagram', href: 'https://www.instagram.com/asthriona.dev/' },
+];
 
-        const navLinksContainer = document.getElementById('nav-links');
-        navigation.forEach(item => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = item.href;
-            a.textContent = item.name;
-            li.appendChild(a);
-            navLinksContainer.appendChild(li);
-        });
+const navLinksContainer = document.getElementById('nav-links');
+navigation.forEach(item => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = item.href;
+    a.textContent = item.name;
+    li.appendChild(a);
+    navLinksContainer.appendChild(li);
+});
 
-        const socialLinksContainer = document.getElementById('social-links');
-        socialLinks.forEach(link => {
-            const a = document.createElement('a');
-            a.href = link.href;
-            a.textContent = link.name;
-            a.target = '_blank';
-            socialLinksContainer.appendChild(a);
-        });
+const socialLinksContainer = document.getElementById('social-links');
+socialLinks.forEach(link => {
+    const a = document.createElement('a');
+    a.href = link.href;
+    a.textContent = link.name;
+    a.target = '_blank';
+    socialLinksContainer.appendChild(a);
+});
