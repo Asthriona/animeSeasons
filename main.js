@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const downloadButton = document.createElement('button');
             downloadButton.className = 'download-season-btn';
             downloadButton.textContent = 'Download Season Image';
+            downloadButton.style.display = 'block'; // Ensure visibility in production
             downloadButton.addEventListener('click', () => {
                 captureSeasonImage(seasonDiv, `${seasonData.season}-${seasonData.year}.png`);
             });
@@ -322,7 +323,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-document.getElementById('year').textContent = new Date().getFullYear();
+// Not sure why this caused an issue in production.
+const yearElement = document.getElementById('year');
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+}
 
 const navigation = [
     { name: 'Home', href: '/' },
