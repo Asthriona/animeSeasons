@@ -406,8 +406,3 @@ h1 {
     cursor: pointer;
     transition: 0.2s;
 }
-
-/* To hide the ugly hack */
-.みにくい {
-    display: none;
-}
