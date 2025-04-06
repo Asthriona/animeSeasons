@@ -67,6 +67,12 @@ h1 {
     align-items: center;
 }
 
+.season-header .left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 #download-season-image {
     margin: 0;
 }

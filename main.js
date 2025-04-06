@@ -172,12 +172,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const seasonHeader = document.createElement('div');
             seasonHeader.className = 'season-header';
 
+            // Create left section for season name and "(current)" text
+            const leftSection = document.createElement('div');
+            leftSection.className = 'left-section';
+            leftSection.textContent = `${seasonData.season} ${seasonData.year}`;
+
             // Check if this is the current season
             const isCurrentSeason = `${seasonData.year}-${seasonData.season}` === currentSeasonKey;
-
-            seasonHeader.innerHTML = `${seasonData.season} ${seasonData.year}`;
             if (isCurrentSeason) {
-                seasonHeader.innerHTML += '<span class="current-season-tag">(current)</span>';
+                const currentTag = document.createElement('span');
+                currentTag.className = 'current-season-tag';
+                currentTag.textContent = '(current)';
+                leftSection.appendChild(currentTag);
             }
 
             // Add a download button for the season
@@ -189,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 captureSeasonImage(seasonDiv, `${seasonData.season}-${seasonData.year}.png`);
             });
 
+            seasonHeader.appendChild(leftSection);
             seasonHeader.appendChild(downloadButton);
 
             const animeGrid = document.createElement('div');
