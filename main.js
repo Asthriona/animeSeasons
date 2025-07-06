@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusButtons = document.querySelectorAll('.status-btn');
 
     // Remove dependency on the hardcoded button
-    const downloadButton = document.getElementById("download-season-image");
-    if (downloadButton) {
-        downloadButton.remove();
-    }
+    // const downloadButton = document.getElementById("download-season-image");
+    // if (downloadButton) {
+    //     downloadButton.remove();
+    // }
 
     // Hard-coded username
     const username = "asthriona";
@@ -61,6 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 seasonYear
                                 season
                                 status
+                                genres
+                                format
+                                source
+                                averageScore
+                                description(asHtml: false)
+                                studios(isMain: true) {
+                                    nodes { name }
+                                }
                             }
                         }
                     }
@@ -187,16 +195,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Add a download button for the season
-            const downloadButton = document.createElement('button');
-            downloadButton.className = 'download-season-btn';
-            downloadButton.textContent = 'Download Season Image';
-            downloadButton.style.display = 'block'; // Ensure visibility
-            downloadButton.addEventListener('click', () => {
-                captureSeasonImage(seasonDiv, `${seasonData.season}-${seasonData.year}.png`);
-            });
+            // const downloadButton = document.createElement('button');
+            // downloadButton.className = 'download-season-btn';
+            // downloadButton.textContent = 'Download Season Image';
+            // downloadButton.style.display = 'block'; // Ensure visibility
+            // downloadButton.addEventListener('click', () => {
+            //     captureSeasonImage(seasonDiv, `${seasonData.season}-${seasonData.year}.png`);
+            // });
 
             seasonHeader.appendChild(leftSection);
-            seasonHeader.appendChild(downloadButton);
+            // seasonHeader.appendChild(downloadButton);
 
             const animeGrid = document.createElement('div');
             animeGrid.className = 'anime-grid';
@@ -315,18 +323,18 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} targetElement - The DOM element to capture.
      * @param {string} fileName - The name of the downloaded file.
      */
-    function captureSeasonImage(targetElement, fileName) {
-        html2canvas(targetElement, {
-            backgroundColor: null, // transparent
-            useCORS: true, // allows cross-origin images
-            scale: 2 // higher resolution
-        }).then(canvas => {
-            const link = document.createElement("a");
-            link.download = fileName;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        });
-    }
+    // function captureSeasonImage(targetElement, fileName) {
+    //     html2canvas(targetElement, {
+    //         backgroundColor: null, // transparent
+    //         useCORS: true, // allows cross-origin images
+    //         scale: 2 // higher resolution
+    //     }).then(canvas => {
+    //         const link = document.createElement("a");
+    //         link.download = fileName;
+    //         link.href = canvas.toDataURL("image/png");
+    //         link.click();
+    //     });
+    // }
 });
 
 // Not sure why this caused an issue in production.
@@ -361,11 +369,11 @@ navigation.forEach(item => {
     navLinksContainer.appendChild(li);
 });
 
-const socialLinksContainer = document.getElementById('social-links');
-socialLinks.forEach(link => {
-    const a = document.createElement('a');
-    if (!seasonsContainer) return alert("No season container.");
-    a.textContent = link.name;
-    a.target = '_blank';
-    socialLinksContainer.appendChild(a);
-});
+// const socialLinksContainer = document.getElementById('social-links');
+// socialLinks.forEach(link => {
+//     const a = document.createElement('a');
+//     if (!seasonsContainer) return alert("No season container.");
+//     a.textContent = link.name;
+//     a.target = '_blank';
+//     socialLinksContainer.appendChild(a);
+// });
