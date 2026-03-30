@@ -335,45 +335,37 @@ document.addEventListener('DOMContentLoaded', () => {
     //         link.click();
     //     });
     // }
+
+    // Populate footer year
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+
+    const navigation = [
+        { name: 'Home', href: '/' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Projects', href: '/projects' },
+        { name: 'About', href: '/about' },
+        { name: 'Anime', href: '/anime' },
+    ];
+
+    const socialLinks = [
+        { name: 'GitHub', href: 'https://github.com/Asthriona' },
+        { name: 'BlueSky', href: 'https://bsky.app/profile/asthriona.bsky.social' },
+        { name: 'Twitter', href: 'https://twitter.com/Asthriona' },
+        { name: 'YouTube', href: 'https://youtube.com/@Asthriona' },
+        { name: 'Instagram', href: 'https://www.instagram.com/asthriona.dev/' },
+    ];
+
+    // Populate navigation links
+    const navLinksContainer = document.getElementById('nav-links');
+    navigation.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.href;
+        a.textContent = item.name;
+        li.appendChild(a);
+        navLinksContainer.appendChild(li);
+    });
 });
-
-// Not sure why this caused an issue in production.
-const yearElement = document.getElementById('year');
-if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
-}
-
-const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'About', href: '/about' },
-    { name: 'Anime', href: '/anime' },
-];
-
-const socialLinks = [
-    { name: 'GitHub', href: 'https://github.com/Asthriona' },
-    { name: 'BlueSky', href: 'https://bsky.app/profile/asthriona.bsky.social' },
-    { name: 'Twitter', href: 'https://twitter.com/Asthriona' },
-    { name: 'YouTube', href: 'https://youtube.com/@Asthriona' },
-    { name: 'Instagram', href: 'https://www.instagram.com/asthriona.dev/' },
-];
-
-const navLinksContainer = document.getElementById('nav-links');
-navigation.forEach(item => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = item.href;
-    a.textContent = item.name;
-    li.appendChild(a);
-    navLinksContainer.appendChild(li);
-});
-
-// const socialLinksContainer = document.getElementById('social-links');
-// socialLinks.forEach(link => {
-//     const a = document.createElement('a');
-//     if (!seasonsContainer) return alert("No season container.");
-//     a.textContent = link.name;
-//     a.target = '_blank';
-//     socialLinksContainer.appendChild(a);
-// });
