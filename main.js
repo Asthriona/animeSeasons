@@ -47,8 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch user anime list on page load
     fetchUserAnimeList(username);
 
-    // Function to fetch user anime list from Anilist
-    async function fetchUserAnimeList(username) {
+/**
+ * Fetches the user's anime list from AniList GraphQL API.
+ * Uses caching to avoid repeated API calls.
+ * @param {string} username - The AniList username.
+ */
+async function fetchUserAnimeList(username) {
         showLoading(true);
         clearError();
         seasonsContainer.innerHTML = '';
@@ -64,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showLoading(false);
                     return;
                 }
-            } catch (e) {
+            } catch {
                 // Invalid cache, proceed to fetch
             }
         }
@@ -115,22 +119,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify({
-                    query: query,
+                    query,
                     variables: { username }
                 })
             });
 
-            const filteredLists = (await response.json()).data.MediaListCollection.lists.filter(list => list.name !== 'Best of all time');
+            const result = await response.json();
+            const filteredLists = result?.data?.MediaListCollection?.lists?.filter(list => list.name !== 'Best of all time') || [];
             const data = { data: { MediaListCollection: { lists: filteredLists } } };
-            console.log(data);
 
             if (data.errors) {
-                showError(data.errors[0].message);
+                showError(data.errors[0]?.message || 'Unknown error');
                 showLoading(false);
                 return;
             }
 
-            if (!data.data.MediaListCollection) {
+            if (!data.data?.MediaListCollection) {
                 showError('No data found for this username');
                 showLoading(false);
                 return;
@@ -144,20 +148,25 @@ document.addEventListener('DOMContentLoaded', () => {
             displayAnimeBySeasons(userData, currentStatus);
 
         } catch (error) {
-            showError('Error fetching data: ' + error.message);
+            showError(`Error fetching data: ${error.message}`);
         } finally {
             showLoading(false);
         }
     }
 
-    // Function to display anime by seasons
-    function displayAnimeBySeasons(animeList, statusFilter) {
+/**
+ * Displays the anime list grouped by seasons.
+ * Filters by status, groups by season/year, sorts, and renders the DOM.
+ * @param {Array} animeList - Array of anime entries.
+ * @param {string} statusFilter - Status to filter by ('ALL' or specific status).
+ */
+function displayAnimeBySeasons(animeList, statusFilter) {
         seasonsContainer.innerHTML = '';
 
         // Filter by status if not "ALL"
         const filteredList = statusFilter === 'ALL'
             ? animeList
-            : animeList.filter(entry => entry.status === statusFilter);
+            : animeList.filter(({ status }) => status === statusFilter);
 
         if (filteredList.length === 0) {
             seasonsContainer.innerHTML = '<div class="no-results">No anime found with the selected status</div>';
@@ -167,24 +176,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Group anime by season and year
         const animeBySeasons = {};
 
-        filteredList.forEach(entry => {
-            const anime = entry.media;
-            if (!anime.season || !anime.seasonYear) return;
+        filteredList.forEach(({ media, status }) => {
+            const { season, seasonYear } = media;
+            if (!season || !seasonYear) return;
 
-            const seasonKey = `${anime.seasonYear}-${anime.season}`;
+            const seasonKey = `${seasonYear}-${season}`;
             if (!animeBySeasons[seasonKey]) {
                 animeBySeasons[seasonKey] = {
-                    year: anime.seasonYear,
-                    season: anime.season,
+                    year: seasonYear,
+                    season,
                     anime: []
                 };
             }
 
             // Store both the anime media and user status
-            animeBySeasons[seasonKey].anime.push({
-                media: anime,
-                status: entry.status
-            });
+            animeBySeasons[seasonKey].anime.push({ media, status });
         });
 
         // Sort seasons by year and season
@@ -198,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fragment = document.createDocumentFragment();
 
         // Generate HTML for each season
-        sortedSeasons.forEach(seasonData => {
+        sortedSeasons.forEach(({ year, season, anime }) => {
             const seasonDiv = document.createElement('div');
             seasonDiv.className = 'season';
 
@@ -208,10 +214,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create left section for season name and "(current)" text
             const leftSection = document.createElement('div');
             leftSection.className = 'left-section';
-            leftSection.textContent = `${seasonData.season} ${seasonData.year}`;
+            leftSection.textContent = `${season} ${year}`;
 
             // Check if this is the current season
-            const isCurrentSeason = `${seasonData.year}-${seasonData.season}` === currentSeasonKey;
+            const isCurrentSeason = `${year}-${season}` === currentSeasonKey;
             if (isCurrentSeason) {
                 const currentTag = document.createElement('span');
                 currentTag.className = 'current-season-tag';
@@ -225,20 +231,17 @@ document.addEventListener('DOMContentLoaded', () => {
             animeGrid.className = 'anime-grid';
 
             // Sort anime within season by name
-            seasonData.anime.sort((a, b) => {
+            anime.sort((a, b) => {
                 const titleA = a.media.title.english || a.media.title.romaji;
                 const titleB = b.media.title.english || b.media.title.romaji;
                 return titleA.localeCompare(titleB);
             });
 
-            seasonData.anime.forEach(animeEntry => {
-                const anime = animeEntry.media;
-                const userStatus = animeEntry.status;
-                const isFinished = anime.status === 'FINISHED';
+            anime.forEach(({ media: animeData, status: userStatus }) => {
+                const { status, episodes = 0, duration = 0, title, coverImage, id } = animeData;
+                const isFinished = status === 'FINISHED';
 
                 // Calculate total runtime
-                const episodes = anime.episodes || 0;
-                const duration = anime.duration || 0;
                 const totalMinutes = episodes * duration;
                 const hours = Math.floor(totalMinutes / 60);
                 const minutes = totalMinutes % 60;
@@ -272,23 +275,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Link to anilist page
                 const animeLink = document.createElement('a');
-                animeLink.href = `https://anilist.co/anime/${anime.id}`;
+                animeLink.href = `https://anilist.co/anime/${id}`;
                 animeLink.target = '_blank';
                 animeLink.appendChild(animeCard);
 
-                const coverImage = document.createElement('img');
-                coverImage.className = 'anime-cover';
-                coverImage.src = anime.coverImage.large;
-                coverImage.alt = anime.title.native || anime.title.romaji;
-                coverImage.loading = 'lazy'; // Lazy load images
+                const coverImageEl = document.createElement('img');
+                coverImageEl.className = 'anime-cover';
+                coverImageEl.src = coverImage.large;
+                coverImageEl.alt = title.native || title.romaji;
+                coverImageEl.loading = 'lazy'; // Lazy load images
 
                 const overlay = document.createElement('div');
                 overlay.className = 'anime-overlay';
-                overlay.title = `${anime.title.romaji || anime.title.native} - ${statusDisplay}`;
+                overlay.title = `${title.romaji || title.native} - ${statusDisplay}`;
 
-                const title = document.createElement('div');
-                title.className = 'anime-title';
-                title.textContent = anime.title.native || anime.title.romaji;
+                const titleEl = document.createElement('div');
+                titleEl.className = 'anime-title';
+                titleEl.textContent = title.native || title.romaji;
 
                 const info = document.createElement('div');
                 info.className = 'anime-info';
@@ -299,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 info.appendChild(runtime);
 
-                overlay.appendChild(title);
+                overlay.appendChild(titleEl);
                 overlay.appendChild(info);
 
                 if (isFinished) {
@@ -309,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     animeCard.appendChild(finishedTag);
                 }
 
-                animeCard.appendChild(coverImage);
+                animeCard.appendChild(coverImageEl);
                 animeCard.appendChild(overlay);
                 animeLink.appendChild(animeCard);
                 animeGrid.appendChild(animeLink);
