@@ -16,6 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let userData = null;
     let currentStatus = 'ALL'; // Default to ALL
 
+    // Cache key for localStorage
+    const CACHE_KEY = 'anilist_user_data';
+    const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hour in milliseconds
+
+    // Determine current season once
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    let currentSeason;
+    if (currentMonth >= 0 && currentMonth <= 2) currentSeason = 'WINTER';
+    else if (currentMonth >= 3 && currentMonth <= 5) currentSeason = 'SPRING';
+    else if (currentMonth >= 6 && currentMonth <= 8) currentSeason = 'SUMMER';
+    else currentSeason = 'FALL';
+    const currentSeasonKey = `${currentYear}-${currentSeason}`;
+
     // Add event listener to status filter buttons
     statusButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -37,6 +52,22 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoading(true);
         clearError();
         seasonsContainer.innerHTML = '';
+
+        // Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            try {
+                const { data, timestamp } = JSON.parse(cached);
+                if (Date.now() - timestamp < CACHE_EXPIRY) {
+                    userData = data;
+                    displayAnimeBySeasons(userData, currentStatus);
+                    showLoading(false);
+                    return;
+                }
+            } catch (e) {
+                // Invalid cache, proceed to fetch
+            }
+        }
 
         const query = `
             query ($username: String) {
@@ -106,6 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             userData = data.data.MediaListCollection.lists.flatMap(list => list.entries);
+
+            // Cache the data
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: userData, timestamp: Date.now() }));
+
             displayAnimeBySeasons(userData, currentStatus);
 
         } catch (error) {
@@ -159,18 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return seasonOrder[b.season] - seasonOrder[a.season];
         });
 
-        // Determine current season
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth();
-
-        let currentSeason;
-        if (currentMonth >= 0 && currentMonth <= 2) currentSeason = 'WINTER';
-        else if (currentMonth >= 3 && currentMonth <= 5) currentSeason = 'SPRING';
-        else if (currentMonth >= 6 && currentMonth <= 8) currentSeason = 'SUMMER';
-        else currentSeason = 'FALL';
-
-        const currentSeasonKey = `${currentYear}-${currentSeason}`;
+        // Use DocumentFragment for batch DOM insertion
+        const fragment = document.createDocumentFragment();
 
         // Generate HTML for each season
         sortedSeasons.forEach(seasonData => {
@@ -194,17 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 leftSection.appendChild(currentTag);
             }
 
-            // Add a download button for the season
-            // const downloadButton = document.createElement('button');
-            // downloadButton.className = 'download-season-btn';
-            // downloadButton.textContent = 'Download Season Image';
-            // downloadButton.style.display = 'block'; // Ensure visibility
-            // downloadButton.addEventListener('click', () => {
-            //     captureSeasonImage(seasonDiv, `${seasonData.season}-${seasonData.year}.png`);
-            // });
-
             seasonHeader.appendChild(leftSection);
-            // seasonHeader.appendChild(downloadButton);
 
             const animeGrid = document.createElement('div');
             animeGrid.className = 'anime-grid';
@@ -265,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 coverImage.className = 'anime-cover';
                 coverImage.src = anime.coverImage.large;
                 coverImage.alt = anime.title.native || anime.title.romaji;
+                coverImage.loading = 'lazy'; // Lazy load images
 
                 const overlay = document.createElement('div');
                 overlay.className = 'anime-overlay';
@@ -301,8 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             seasonDiv.appendChild(seasonHeader);
             seasonDiv.appendChild(animeGrid);
-            seasonsContainer.appendChild(seasonDiv);
+            fragment.appendChild(seasonDiv);
         });
+
+        seasonsContainer.appendChild(fragment);
     }
 
     // Helper functions
